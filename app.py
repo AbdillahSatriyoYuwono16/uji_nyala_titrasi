@@ -9,6 +9,7 @@ menu = st.sidebar.selectbox(
 # --- Menu BERANDA ---
 if menu == "Beranda":
     st.title("🔬 Selamat Datang di Aplikasi Kimia Interaktif")
+    st.subheader("🧪1A Kelompok 2") #
     st.write("Silakan pilih menu di sebelah kiri untuk memulai.")
     st.image("https://cdn.pixabay.com/photo/2020/03/17/03/32/laboratory-4936936_960_720.png", width=400)
 
