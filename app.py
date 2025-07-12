@@ -82,7 +82,7 @@ elif menu == "Uji Nyala":
 
 # --- Menu TITRASI ASAM BASA ---
 elif menu == "Titrasi Asam Basa":
-    st.header("⚗️ Titrasi Asam-Basa")
+    st.header("⚗️ Simulasi Titrasi Asam-Basa")
 
     st.markdown("""
 Titrasi asam-basa adalah metode untuk menentukan konsentrasi suatu larutan asam atau basa dengan menambahkan larutan penitrasi (basa atau asam yang telah diketahui konsentrasinya) hingga tercapai titik ekivalen.
@@ -91,38 +91,70 @@ Titrasi asam-basa adalah metode untuk menentukan konsentrasi suatu larutan asam 
 > Ma × Va = Mb × Vb
 """)
 
-    # Pilihan zat
+    # Pilihan larutan
     asam = st.selectbox("Pilih jenis asam:", ["HCl", "CH₃COOH"])
     basa = st.selectbox("Pilih jenis basa:", ["NaOH", "KOH"])
 
-    # Input nilai
     Ma = st.number_input("Konsentrasi Asam (Ma) mol/L", 0.1, 2.0, 1.0, step=0.1)
     Va = st.slider("Volume Asam (Va) mL", 5, 50, 25)
     Mb = st.number_input("Konsentrasi Basa (Mb) mol/L", 0.1, 2.0, 1.0, step=0.1)
 
-    # Hitung volume basa yang dibutuhkan
+    # Hitung volume basa
     if Ma > 0 and Va > 0 and Mb > 0:
         Vb = (Ma * Va) / Mb
         st.success(f"🎯 Volume basa yang dibutuhkan: **{Vb:.2f} mL**")
     else:
         st.warning("Masukkan semua nilai terlebih dahulu.")
 
-    # Simulasi penambahan basa
+    # Slider untuk simulasi titrasi
     volume_basa = st.slider("Simulasi penambahan basa (mL)", 0, 50, 0)
 
-    # Hitung pH simulasi
+    # Perhitungan pH (simulasi sederhana)
     delta = volume_basa - Vb
     if delta < 0:
-        ph = 3 + (volume_basa / Vb) * 4  # Asam → Netral
+        ph = 3 + (volume_basa / Vb) * 4
     elif delta == 0:
-        ph = 7  # Titik ekivalen
+        ph = 7
     else:
-        ph = 7 + min(delta * 0.5, 7)  # Netral → Basa
+        ph = 7 + min(delta * 0.5, 7)
+    ph = round(ph, 1)
 
-    st.metric("📊 pH Simulasi", f"{ph:.1f}")
-    
-    # Warna indikator sederhana
-    warna = "red" if ph < 7 else "green" if ph > 7 else "blue"
-    st.markdown(f"<div style='text-align:center; font-size:24px; color:{warna}'>Warna indikator: <b>{'Merah' if ph < 7 else 'Hijau' if ph > 7 else 'Biru'}</b></div>", unsafe_allow_html=True)
+    st.metric("📊 pH Simulasi", f"{ph}")
 
+    # Penjelasan otomatis
+    if ph < 7:
+        warna = "red"
+        keterangan = "Larutan bersifat asam"
+    elif ph == 7:
+        warna = "blue"
+        keterangan = "Larutan bersifat netral (titik ekivalen)"
+    else:
+        warna = "green"
+        keterangan = "Larutan bersifat basa"
+
+    # Animasi indikator warna
+    import streamlit.components.v1 as components
+    components.html(f"""
+    <div style="text-align:center; margin-top:20px;">
+        <div style="
+            width:100px;
+            height:100px;
+            margin:auto;
+            border-radius:50%;
+            background:{warna};
+            box-shadow:0 0 40px 20px {warna};
+            animation:pulse 1s infinite alternate;
+        "></div>
+        <p style="font-size:20px; color:{warna}; font-weight:bold; margin-top:10px;">{keterangan}</p>
+    </div>
+
+    <style>
+    @keyframes pulse {{
+        from {{ transform: scale(1); opacity: 1; }}
+        to {{ transform: scale(1.1); opacity: 0.7; }}
+    }}
+    </style>
+    """, height=200)
+
+    # Progress bar pH
     st.progress(min(int((ph / 14) * 100), 100))
