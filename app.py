@@ -95,7 +95,6 @@ elif menu == "Titrasi Asam Basa":
         <div style="margin-top:8px; font-weight:bold;">Volume: {volume_basa} mL</div>
     </div>
     """, height=tinggi_buret + 80)
-    
     st.markdown("""
 Titrasi asam-basa adalah metode untuk menentukan konsentrasi suatu larutan asam atau basa dengan menambahkan larutan penitrasi (basa atau asam yang telah diketahui konsentrasinya) hingga tercapai titik ekivalen.
 
