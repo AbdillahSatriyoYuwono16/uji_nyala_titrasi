@@ -242,11 +242,3 @@ elif menu == "Kuis Asam-Basa":
         
         st.markdown("---")
         st.subheader(f"🎯 Skor akhir kamu: {skor} dari {len(soal)}")
-        else:
-            st.error(f"❌ Salah. Jawaban: {jawaban_benar}")
-
-    st.markdown("---")
-    st.subheader(f"🎯 Skor kamu: {skor} dari {len(soal)}")
-
-    st.markdown("---")
-    st.subheader(f"ðŸŽ¯ Skor kamu: {skor} dari {len(soal)}")
