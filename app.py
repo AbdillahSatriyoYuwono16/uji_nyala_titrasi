@@ -1,13 +1,11 @@
 elif menu == "Uji Nyala":
     st.header("🔥 Uji Nyala Logam")
 
-    # Pilihan logam
     logam = st.selectbox("Pilih logam yang diuji:", [
         "Natrium (Na)", "Kalium (K)", "Kalsium (Ca)",
         "Tembaga (Cu)", "Stronsium (Sr)"
     ])
 
-    # Warna nyala teks
     warna_teks = {
         "Natrium (Na)": "Kuning terang",
         "Kalium (K)": "Ungu muda",
@@ -16,7 +14,6 @@ elif menu == "Uji Nyala":
         "Stronsium (Sr)": "Merah menyala"
     }
 
-    # Warna CSS untuk api
     warna_api = {
         "Natrium (Na)": "gold",
         "Kalium (K)": "violet",
@@ -25,7 +22,6 @@ elif menu == "Uji Nyala":
         "Stronsium (Sr)": "red"
     }
 
-    # Penjelasan kimia singkat
     penjelasan = {
         "Natrium (Na)": "🔬 Elektron natrium tereksitasi dan kembali ke keadaan dasar, memancarkan cahaya kuning di sekitar 589 nm.",
         "Kalium (K)": "🔬 Kalium memancarkan warna ungu muda karena transisi elektron pada panjang gelombang sekitar 766 nm.",
@@ -34,12 +30,10 @@ elif menu == "Uji Nyala":
         "Stronsium (Sr)": "🔬 Warna merah terang berasal dari transisi elektron stronsium di sekitar 606–670 nm."
     }
 
-    # Tombol interaktif
     if st.button("🔬 Mulai Uji Nyala"):
         st.success(f"✅ Warna nyala: **{warna_teks[logam]}**")
         st.info(penjelasan[logam])
 
-        # Tampilkan animasi api menggunakan HTML
         import streamlit.components.v1 as components
         warna_nyala = warna_api[logam]
 
