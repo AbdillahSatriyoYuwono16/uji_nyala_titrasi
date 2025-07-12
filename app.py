@@ -20,7 +20,10 @@ if menu == "Beranda":
 elif menu == "Uji Nyala":
     st.header("🔥 Uji Nyala Logam")
 
-    logam = st.selectbox("Pilih logam yang diuji:", ["Natrium (Na)", "Kalium (K)", "Kalsium (Ca)", "Tembaga (Cu)", "Stronsium (Sr)"])
+    logam = st.selectbox("Pilih logam yang diuji:", [
+        "Natrium (Na)", "Kalium (K)", "Kalsium (Ca)",
+        "Tembaga (Cu)", "Stronsium (Sr)"
+    ])
 
     warna = {
         "Natrium (Na)": "Kuning terang",
@@ -29,6 +32,11 @@ elif menu == "Uji Nyala":
         "Tembaga (Cu)": "Hijau kebiruan",
         "Stronsium (Sr)": "Merah menyala"
     }
+
+    st.write(f"🔍 Warna nyala: **{warna[logam]}**")
+
+    video_url = "https://www.youtube.com/watch?v=NDgu4MrqAAA"
+    st.video(video_url)
 
     gambar = {
         "Natrium (Na)": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Sodium_flame_test.jpg",
