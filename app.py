@@ -85,27 +85,44 @@ elif menu == "Titrasi Asam Basa":
     st.header("⚗️ Titrasi Asam-Basa")
 
     st.markdown("""
-Titrasi asam-basa adalah teknik untuk menentukan konsentrasi suatu larutan asam atau basa  
-dengan menambahkan larutan penitrasi (basa/asam yang sudah diketahui konsentrasinya) secara bertahap.
+Titrasi asam-basa adalah metode untuk menentukan konsentrasi suatu larutan asam atau basa dengan menambahkan larutan penitrasi (basa atau asam yang telah diketahui konsentrasinya) hingga tercapai titik ekivalen.
 
-Rumus dasar:
-> **Ma × Va = Mb × Vb**
+**Rumus dasar:**
+> Ma × Va = Mb × Vb
 """)
 
-    # Pilih asam dan basa
+    # Pilihan zat
     asam = st.selectbox("Pilih jenis asam:", ["HCl", "CH₃COOH"])
     basa = st.selectbox("Pilih jenis basa:", ["NaOH", "KOH"])
 
-    # Input nilai-nilai
-    Ma = st.number_input("Konsentrasi Asam (Ma) mol/L", min_value=0.0, step=0.1)
-    Va = st.number_input("Volume Asam (Va) mL", min_value=0.0, step=1.0)
-    Mb = st.number_input("Konsentrasi Basa (Mb) mol/L", min_value=0.0, step=0.1)
+    # Input nilai
+    Ma = st.number_input("Konsentrasi Asam (Ma) mol/L", 0.1, 2.0, 1.0, step=0.1)
+    Va = st.slider("Volume Asam (Va) mL", 5, 50, 25)
+    Mb = st.number_input("Konsentrasi Basa (Mb) mol/L", 0.1, 2.0, 1.0, step=0.1)
 
+    # Hitung volume basa yang dibutuhkan
     if Ma > 0 and Va > 0 and Mb > 0:
-        # Hitung volume basa
         Vb = (Ma * Va) / Mb
         st.success(f"🎯 Volume basa yang dibutuhkan: **{Vb:.2f} mL**")
     else:
-        st.info("Masukkan semua nilai untuk menghitung volume basa.")
+        st.warning("Masukkan semua nilai terlebih dahulu.")
 
-    st.image("https://upload.wikimedia.org/wikipedia/commons/3/3e/Acid-base_titration_curve.png", caption="Kurva Titrasi Asam-Basa", use_column_width=True)
+    # Simulasi penambahan basa
+    volume_basa = st.slider("Simulasi penambahan basa (mL)", 0, 50, 0)
+
+    # Hitung pH simulasi
+    delta = volume_basa - Vb
+    if delta < 0:
+        ph = 3 + (volume_basa / Vb) * 4  # Asam → Netral
+    elif delta == 0:
+        ph = 7  # Titik ekivalen
+    else:
+        ph = 7 + min(delta * 0.5, 7)  # Netral → Basa
+
+    st.metric("📊 pH Simulasi", f"{ph:.1f}")
+    
+    # Warna indikator sederhana
+    warna = "red" if ph < 7 else "green" if ph > 7 else "blue"
+    st.markdown(f"<div style='text-align:center; font-size:24px; color:{warna}'>Warna indikator: <b>{'Merah' if ph < 7 else 'Hijau' if ph > 7 else 'Biru'}</b></div>", unsafe_allow_html=True)
+
+    st.progress(min(int((ph / 14) * 100), 100))
