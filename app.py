@@ -45,7 +45,6 @@ elif menu == "Uji Nyala":
         "Tembaga (Cu)": "https://upload.wikimedia.org/wikipedia/commons/b/b0/Copper_flame_test.jpg",
         "Stronsium (Sr)": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Strontium_flame_test.jpg"
     }
-    }
 
     st.write(f"🔍 Warna nyala: **{warna[logam]}**")
     st.image(gambar[logam], caption=f"Warna nyala {logam}", use_column_width=True)
