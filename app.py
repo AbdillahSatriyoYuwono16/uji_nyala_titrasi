@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit.components.v1 as components
 
 # Sidebar Menu
 menu = st.sidebar.selectbox(
@@ -50,6 +49,8 @@ elif menu == "Uji Nyala":
         st.success(f"✅ Warna nyala: **{warna_teks[logam]}**")
         st.info(penjelasan[logam])
 
+        # Import di sini untuk menghindari error saat startup
+        import streamlit.components.v1 as components
         warna_nyala = warna_api[logam]
 
         components.html(f"""
