@@ -12,14 +12,14 @@ menu = st.sidebar.selectbox(
 
 # --- Menu BERANDA ---
 if menu == "Beranda":
-    st.title("ðŸ”¬ Selamat Datang di Aplikasi Kimia Interaktif")
+    st.title("🔬 Selamat Datang di Aplikasi Kimia Interaktif")
     st.write("Kelompok 2 - Kelas 1A")
     st.write("Silakan pilih menu di sebelah kiri untuk memulai.")
     st.image("https://cdn.pixabay.com/photo/2020/03/17/03/32/laboratory-4936936_960_720.png", width=400)
 
 # --- Menu UJI NYALA ---
 elif menu == "Uji Nyala":
-    st.header("ðŸ”¥ Uji Nyala Logam")
+    st.header("🔥 Uji Nyala Logam")
 
     logam = st.selectbox("Pilih logam yang diuji:", [
         "Natrium (Na)", "Kalium (K)", "Kalsium (Ca)",
@@ -43,15 +43,15 @@ elif menu == "Uji Nyala":
     }
 
     penjelasan = {
-        "Natrium (Na)": "ðŸ”¬ Elektron natrium tereksitasi dan kembali ke keadaan dasar, memancarkan cahaya kuning di sekitar 589 nm.",
-        "Kalium (K)": "ðŸ”¬ Kalium memancarkan warna ungu muda karena transisi elektron pada panjang gelombang sekitar 766 nm.",
-        "Kalsium (Ca)": "ðŸ”¬ Warna jingga berasal dari eksitasi elektron kalsium, memancarkan cahaya sekitar 622 nm.",
-        "Tembaga (Cu)": "ðŸ”¬ Tembaga menghasilkan warna hijau kebiruan karena elektron memancarkan cahaya sekitar 510â€“520 nm.",
-        "Stronsium (Sr)": "ðŸ”¬ Warna merah terang berasal dari transisi elektron stronsium di sekitar 606â€“670 nm."
+        "Natrium (Na)": "🔬 Elektron natrium tereksitasi dan kembali ke keadaan dasar, memancarkan cahaya kuning di sekitar 589 nm.",
+        "Kalium (K)": "🔬 Kalium memancarkan warna ungu muda karena transisi elektron pada panjang gelombang sekitar 766 nm.",
+        "Kalsium (Ca)": "🔬 Warna jingga berasal dari eksitasi elektron kalsium, memancarkan cahaya sekitar 622 nm.",
+        "Tembaga (Cu)": "🔬 Tembaga menghasilkan warna hijau kebiruan karena elektron memancarkan cahaya sekitar 510–520 nm.",
+        "Stronsium (Sr)": "🔬 Warna merah terang berasal dari transisi elektron stronsium di sekitar 606–670 nm."
     }
 
-    if st.button("ðŸ”¬ Mulai Uji Nyala"):
-        st.success(f"âœ… Warna nyala: **{warna_teks[logam]}**")
+    if st.button("🔬 Mulai Uji Nyala"):
+        st.success(f"✅ Warna nyala: **{warna_teks[logam]}**")
         st.info(penjelasan[logam])
 
         warna_nyala = warna_api[logam]
@@ -82,17 +82,17 @@ elif menu == "Uji Nyala":
 
 # --- Menu TITRASI ---
 elif menu == "Titrasi Asam Basa":
-    st.header("âš—ï¸ Simulasi Titrasi Asam-Basa")
+    st.header("⚗️ Simulasi Titrasi Asam-Basa")
 
     st.markdown("""
 Titrasi asam-basa adalah metode untuk menentukan konsentrasi suatu larutan asam atau basa dengan menambahkan larutan penitrasi (basa atau asam yang telah diketahui konsentrasinya) hingga tercapai titik ekivalen.
 
 **Rumus dasar:**
-> Ma Ã— Va = Mb Ã— Vb
+> Ma × Va = Mb × Vb
 """)
 
     # Pilihan larutan
-    asam = st.selectbox("Pilih jenis asam:", ["HCl", "CHâ‚ƒCOOH"])
+    asam = st.selectbox("Pilih jenis asam:", ["HCl", "CH₃COOH"])
     basa = st.selectbox("Pilih jenis basa:", ["NaOH", "KOH"])
 
     Ma = st.number_input("Konsentrasi Asam (Ma) mol/L", 0.1, 2.0, 1.0, step=0.1)
@@ -101,7 +101,7 @@ Titrasi asam-basa adalah metode untuk menentukan konsentrasi suatu larutan asam 
 
     if Ma > 0 and Va > 0 and Mb > 0:
         Vb = (Ma * Va) / Mb
-        st.success(f"ðŸŒŸ Volume basa yang dibutuhkan: **{Vb:.2f} mL**")
+        st.success(f"🌟 Volume basa yang dibutuhkan: **{Vb:.2f} mL**")
     else:
         st.warning("Masukkan semua nilai terlebih dahulu.")
 
@@ -117,7 +117,7 @@ Titrasi asam-basa adalah metode untuk menentukan konsentrasi suatu larutan asam 
         ph = 7 + min(delta * 0.5, 7)
     ph = round(ph, 1)
 
-    st.metric("ðŸ“Š pH Simulasi", f"{ph}")
+    st.metric("📊 pH Simulasi", f"{ph}")
 
     if ph < 7:
         warna = "red"
@@ -193,12 +193,12 @@ Titrasi asam-basa adalah metode untuk menentukan konsentrasi suatu larutan asam 
 
 # --- Menu KLASIFIKASI ---
 elif menu == "Klasifikasi Asam-Basa":
-    st.header("ðŸ§¾ Klasifikasi Asam dan Basa")
+    st.header("🧾 Klasifikasi Asam dan Basa")
 
     data = {
         "Nama Zat": [
-            "HCl", "Hâ‚‚SOâ‚„", "HNOâ‚ƒ", "CHâ‚ƒCOOH", "Hâ‚‚COâ‚ƒ",
-            "NaOH", "KOH", "NHâ‚„OH", "Ba(OH)â‚‚", "Mg(OH)â‚‚"
+            "HCl", "H₂SO₄", "HNO₃", "CH₃COOH", "H₂CO₃",
+            "NaOH", "KOH", "NH₄OH", "Ba(OH)₂", "Mg(OH)₂"
         ],
         "Jenis": [
             "Asam Kuat", "Asam Kuat", "Asam Kuat", "Asam Lemah", "Asam Lemah",
@@ -207,17 +207,17 @@ elif menu == "Klasifikasi Asam-Basa":
     }
     df = pd.DataFrame(data)
     st.table(df)
-    st.info("ðŸ§  Catatan:\n- Asam kuat terionisasi sempurna dalam air.\n- Asam lemah hanya sebagian.\n- Begitu pula dengan basa kuat/lemah.")
+    st.info("🧠 Catatan:\n- Asam kuat terionisasi sempurna dalam air.\n- Asam lemah hanya sebagian.\n- Begitu pula dengan basa kuat/lemah.")
 
 # --- Menu KUIS ---
 elif menu == "Kuis Asam-Basa":
-    st.header("ðŸ§  Kuis Sederhana: Asam atau Basa?")
+    st.header("🧠 Kuis Sederhana: Asam atau Basa?")
 
     soal = {
-        "CHâ‚ƒCOOH": "Asam Lemah",
-        "HNOâ‚ƒ": "Asam Kuat",
+        "CH₃COOH": "Asam Lemah",
+        "HNO₃": "Asam Kuat",
         "NaOH": "Basa Kuat",
-        "NHâ‚„OH": "Basa Lemah",
+        "NH₄OH": "Basa Lemah",
         "KOH": "Basa Kuat"
     }
 
@@ -225,10 +225,13 @@ elif menu == "Kuis Asam-Basa":
     for zat, jawaban_benar in soal.items():
         pilihan = st.radio(f"Apa jenis dari {zat}?", ["Asam Kuat", "Asam Lemah", "Basa Kuat", "Basa Lemah"], key=zat)
         if pilihan == jawaban_benar:
-            st.success("âœ… Benar")
+            st.success("✅ Benar")
             skor += 1
         else:
-            st.error(f"âŒ Salah. Jawaban: {jawaban_benar}")
+            st.error(f"❌ Salah. Jawaban: {jawaban_benar}")
+
+    st.markdown("---")
+    st.subheader(f"🎯 Skor kamu: {skor} dari {len(soal)}")
 
     st.markdown("---")
     st.subheader(f"ðŸŽ¯ Skor kamu: {skor} dari {len(soal)}")
