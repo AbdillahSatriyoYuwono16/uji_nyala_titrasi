@@ -3,11 +3,8 @@ import streamlit.components.v1 as components
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Menu sidebar
-menu = st.sidebar.selectbox(
-    "📚 Pilih menu",
-    ["Beranda", "Uji Nyala", "Titrasi Asam Basa"]
-)
+# Sidebar menu
+menu = st.sidebar.selectbox("📚 Pilih menu", ["Beranda", "Uji Nyala", "Titrasi Asam Basa"])
 
 # ============================
 # 🔹 BERANDA
@@ -81,7 +78,6 @@ elif menu == "Uji Nyala":
         }}
         </style>
         """, height=300)
-
     else:
         st.warning("Klik tombol di atas untuk memulai simulasi uji nyala.")
 
@@ -92,11 +88,11 @@ elif menu == "Titrasi Asam Basa":
     st.header("⚗️ Titrasi Asam Basa")
 
     st.markdown("""
-Titrasi asam-basa adalah metode untuk menentukan konsentrasi asam atau basa  
-dengan meneteskan larutan lawannya hingga titik ekivalen tercapai.
+Titrasi asam-basa adalah metode untuk menentukan konsentrasi suatu larutan asam atau basa  
+dengan menambahkan larutan penitrasi hingga mencapai titik ekivalen.
 
-**Rumus utama:**
-> Ma × Va = Mb × Vb
+**Rumus dasar:**  
+`Ma × Va = Mb × Vb`
 """)
 
     asam = st.selectbox("Pilih jenis asam:", ["HCl", "CH₃COOH"])
@@ -128,7 +124,7 @@ dengan meneteskan larutan lawannya hingga titik ekivalen tercapai.
     if st.button("🔬 Tampilkan Simulasi"):
         Vb_vals = np.linspace(0.1, Va_sim * 2, 200)
         pH_vals = []
-        Ka = 1.8e-5  # untuk CH3COOH (asam lemah)
+        Ka = 1.8e-5  # konstanta asam lemah (CH3COOH)
 
         for Vb in Vb_vals:
             n_asam = Ma_sim * Va_sim / 1000
@@ -136,29 +132,29 @@ dengan meneteskan larutan lawannya hingga titik ekivalen tercapai.
 
             if tipe_titrasi == "Asam kuat + Basa kuat":
                 if n_basa < n_asam:
-                    H = (n_asam - n_basa) / (Va_sim + Vb) * 1000
-                    pH = -np.log10(H)
+                    H = (n_asam - n_basa) / ((Va_sim + Vb) / 1000)
+                    pH = -np.log10(H) if H > 0 else 7
                 elif n_basa == n_asam:
                     pH = 7
                 else:
-                    OH = (n_basa - n_asam) / (Va_sim + Vb) * 1000
-                    pOH = -np.log10(OH)
+                    OH = (n_basa - n_asam) / ((Va_sim + Vb) / 1000)
+                    pOH = -np.log10(OH) if OH > 0 else 7
                     pH = 14 - pOH
 
             elif tipe_titrasi == "Asam lemah + Basa kuat":
                 if n_basa < n_asam:
                     HA = n_asam - n_basa
                     A_ = n_basa
-                    H = Ka * (HA / A_)
+                    H = Ka * (HA / A_) if A_ != 0 else 1e-7
                     pH = -np.log10(H)
                 elif n_basa == n_asam:
                     A_ = n_asam
-                    OH = np.sqrt(1e-14 / A_)
+                    OH = np.sqrt(1e-14 / A_) if A_ != 0 else 1e-7
                     pOH = -np.log10(OH)
                     pH = 14 - pOH
                 else:
-                    OH = (n_basa - n_asam) / (Va_sim + Vb) * 1000
-                    pOH = -np.log10(OH)
+                    OH = (n_basa - n_asam) / ((Va_sim + Vb) / 1000)
+                    pOH = -np.log10(OH) if OH > 0 else 7
                     pH = 14 - pOH
 
             pH_vals.append(pH)
@@ -170,5 +166,3 @@ dengan meneteskan larutan lawannya hingga titik ekivalen tercapai.
         ax.set_ylabel("pH")
         ax.grid(True)
         st.pyplot(fig)
-
-
