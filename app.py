@@ -31,11 +31,12 @@ elif menu == "Uji Nyala":
     }
 
     gambar = {
-        "Natrium (Na)": "https://i.imgur.com/7b1YcAS.jpg",     # api natrium
-        "Kalium (K)": "https://i.imgur.com/rRKRYXi.jpg",       # api kalium
-        "Kalsium (Ca)": "https://i.imgur.com/pwXG1oi.jpg",     # api kalsium
-        "Tembaga (Cu)": "https://i.imgur.com/klMbZYX.jpg",     # api tembaga
-        "Stronsium (Sr)": "https://i.imgur.com/WzRbQEn.jpg"    # api stronsium
+        "Natrium (Na)": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Sodium_flame_test.jpg",
+        "Kalium (K)": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Potassium_flame_test.jpg",
+        "Kalsium (Ca)": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Calcium_flame_test.jpg",
+        "Tembaga (Cu)": "https://upload.wikimedia.org/wikipedia/commons/b/b0/Copper_flame_test.jpg",
+        "Stronsium (Sr)": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Strontium_flame_test.jpg"
+    }
     }
 
     st.write(f"🔍 Warna nyala: **{warna[logam]}**")
