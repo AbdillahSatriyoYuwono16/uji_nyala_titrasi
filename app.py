@@ -1,21 +1,25 @@
 import streamlit as st
+import streamlit.components.v1 as components
+import pandas as pd
+
+st.set_page_config(page_title="Aplikasi Kimia Interaktif", layout="centered")
 
 # Sidebar Menu
 menu = st.sidebar.selectbox(
     "Pilih menu",
-    ["Beranda", "Uji Nyala", "Titrasi Asam Basa"]
+    ["Beranda", "Uji Nyala", "Titrasi Asam Basa", "Klasifikasi Asam-Basa", "Kuis Asam-Basa"]
 )
 
 # --- Menu BERANDA ---
 if menu == "Beranda":
-    st.title("🔬 Selamat Datang di Aplikasi Kimia Interaktif")
-    st.subheader("🧪1A Kelompok 2") #
+    st.title("ðŸ”¬ Selamat Datang di Aplikasi Kimia Interaktif")
+    st.write("Kelompok 2 - Kelas 1A")
     st.write("Silakan pilih menu di sebelah kiri untuk memulai.")
     st.image("https://cdn.pixabay.com/photo/2020/03/17/03/32/laboratory-4936936_960_720.png", width=400)
 
 # --- Menu UJI NYALA ---
 elif menu == "Uji Nyala":
-    st.header("🔥 Uji Nyala Logam")
+    st.header("ðŸ”¥ Uji Nyala Logam")
 
     logam = st.selectbox("Pilih logam yang diuji:", [
         "Natrium (Na)", "Kalium (K)", "Kalsium (Ca)",
@@ -39,19 +43,17 @@ elif menu == "Uji Nyala":
     }
 
     penjelasan = {
-        "Natrium (Na)": "🔬 Elektron natrium tereksitasi dan kembali ke keadaan dasar, memancarkan cahaya kuning di sekitar 589 nm.",
-        "Kalium (K)": "🔬 Kalium memancarkan warna ungu muda karena transisi elektron pada panjang gelombang sekitar 766 nm.",
-        "Kalsium (Ca)": "🔬 Warna jingga berasal dari eksitasi elektron kalsium, memancarkan cahaya sekitar 622 nm.",
-        "Tembaga (Cu)": "🔬 Tembaga menghasilkan warna hijau kebiruan karena elektron memancarkan cahaya sekitar 510–520 nm.",
-        "Stronsium (Sr)": "🔬 Warna merah terang berasal dari transisi elektron stronsium di sekitar 606–670 nm."
+        "Natrium (Na)": "ðŸ”¬ Elektron natrium tereksitasi dan kembali ke keadaan dasar, memancarkan cahaya kuning di sekitar 589 nm.",
+        "Kalium (K)": "ðŸ”¬ Kalium memancarkan warna ungu muda karena transisi elektron pada panjang gelombang sekitar 766 nm.",
+        "Kalsium (Ca)": "ðŸ”¬ Warna jingga berasal dari eksitasi elektron kalsium, memancarkan cahaya sekitar 622 nm.",
+        "Tembaga (Cu)": "ðŸ”¬ Tembaga menghasilkan warna hijau kebiruan karena elektron memancarkan cahaya sekitar 510â€“520 nm.",
+        "Stronsium (Sr)": "ðŸ”¬ Warna merah terang berasal dari transisi elektron stronsium di sekitar 606â€“670 nm."
     }
 
-    if st.button("🔬 Mulai Uji Nyala"):
-        st.success(f"✅ Warna nyala: **{warna_teks[logam]}**")
+    if st.button("ðŸ”¬ Mulai Uji Nyala"):
+        st.success(f"âœ… Warna nyala: **{warna_teks[logam]}**")
         st.info(penjelasan[logam])
 
-        # Import di sini untuk menghindari error saat startup
-        import streamlit.components.v1 as components
         warna_nyala = warna_api[logam]
 
         components.html(f"""
@@ -59,7 +61,6 @@ elif menu == "Uji Nyala":
           <h3 style="color:{warna_nyala}">Simulasi Api: {logam}</h3>
           <div class="flame"></div>
         </div>
-
         <style>
         .flame {{
           margin: auto;
@@ -70,7 +71,6 @@ elif menu == "Uji Nyala":
           box-shadow: 0 0 60px 30px {warna_nyala};
           animation: pulse 0.6s infinite alternate;
         }}
-
         @keyframes pulse {{
           from {{ transform: scale(1); opacity: 1; }}
           to {{ transform: scale(1.3); opacity: 0.6; }}
@@ -80,36 +80,34 @@ elif menu == "Uji Nyala":
     else:
         st.warning("Klik tombol di atas untuk memulai simulasi uji nyala.")
 
-# --- Menu TITRASI ASAM BASA ---
+# --- Menu TITRASI ---
 elif menu == "Titrasi Asam Basa":
-    st.header("⚗️ Simulasi Titrasi Asam-Basa")
-# 
+    st.header("âš—ï¸ Simulasi Titrasi Asam-Basa")
+
     st.markdown("""
 Titrasi asam-basa adalah metode untuk menentukan konsentrasi suatu larutan asam atau basa dengan menambahkan larutan penitrasi (basa atau asam yang telah diketahui konsentrasinya) hingga tercapai titik ekivalen.
 
 **Rumus dasar:**
-> Ma × Va = Mb × Vb
+> Ma Ã— Va = Mb Ã— Vb
 """)
 
     # Pilihan larutan
-    asam = st.selectbox("Pilih jenis asam:", ["HCl", "CH₃COOH"])
+    asam = st.selectbox("Pilih jenis asam:", ["HCl", "CHâ‚ƒCOOH"])
     basa = st.selectbox("Pilih jenis basa:", ["NaOH", "KOH"])
 
     Ma = st.number_input("Konsentrasi Asam (Ma) mol/L", 0.1, 2.0, 1.0, step=0.1)
     Va = st.slider("Volume Asam (Va) mL", 5, 50, 25)
     Mb = st.number_input("Konsentrasi Basa (Mb) mol/L", 0.1, 2.0, 1.0, step=0.1)
 
-    # Hitung volume basa
     if Ma > 0 and Va > 0 and Mb > 0:
         Vb = (Ma * Va) / Mb
-        st.success(f"🎯 Volume basa yang dibutuhkan: **{Vb:.2f} mL**")
+        st.success(f"ðŸŒŸ Volume basa yang dibutuhkan: **{Vb:.2f} mL**")
     else:
         st.warning("Masukkan semua nilai terlebih dahulu.")
 
-    # Slider untuk simulasi titrasi
     volume_basa = st.slider("Simulasi penambahan basa (mL)", 0, 50, 0)
 
-    # Perhitungan pH (simulasi sederhana)
+    # Perhitungan pH (sederhana)
     delta = volume_basa - Vb
     if delta < 0:
         ph = 3 + (volume_basa / Vb) * 4
@@ -119,21 +117,18 @@ Titrasi asam-basa adalah metode untuk menentukan konsentrasi suatu larutan asam 
         ph = 7 + min(delta * 0.5, 7)
     ph = round(ph, 1)
 
-    st.metric("📊 pH Simulasi", f"{ph}")
+    st.metric("ðŸ“Š pH Simulasi", f"{ph}")
 
-    # Penjelasan otomatis
     if ph < 7:
         warna = "red"
         keterangan = "Larutan bersifat asam"
     elif ph == 7:
         warna = "blue"
-        keterangan = "Larutan bersifat netral (titik ekivalen)"
+        keterangan = "Larutan netral (titik ekivalen)"
     else:
         warna = "green"
         keterangan = "Larutan bersifat basa"
 
-    # Animasi indikator warna
-    import streamlit.components.v1 as components
     components.html(f"""
     <div style="text-align:center; margin-top:20px;">
         <div style="
@@ -147,7 +142,6 @@ Titrasi asam-basa adalah metode untuk menentukan konsentrasi suatu larutan asam 
         "></div>
         <p style="font-size:20px; color:{warna}; font-weight:bold; margin-top:10px;">{keterangan}</p>
     </div>
-
     <style>
     @keyframes pulse {{
         from {{ transform: scale(1); opacity: 1; }}
@@ -156,5 +150,85 @@ Titrasi asam-basa adalah metode untuk menentukan konsentrasi suatu larutan asam 
     </style>
     """, height=200)
 
-    # Progress bar pH
+    ketinggian = int((volume_basa / 50) * 100)
+    components.html(f"""
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+      <div style="
+        position: relative;
+        width: 40px;
+        height: 300px;
+        background: #ccc;
+        border-radius: 10px;
+        box-shadow: inset 0 0 5px #888;
+        overflow: hidden;
+      ">
+        <div style="
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          height: {ketinggian}%;
+          background: linear-gradient(to top, #00f2ff, #8bfaff);
+          transition: height 0.5s;
+        "></div>
+        <div style="
+          position: absolute;
+          left: 100%;
+          top: 0;
+          height: 100%;
+          width: 20px;
+          font-size: 10px;
+          color: #000;
+        ">
+          <div style="position:absolute; top:0;">50</div>
+          <div style="position:absolute; top:25%;">37</div>
+          <div style="position:absolute; top:50%;">25</div>
+          <div style="position:absolute; top:75%;">12</div>
+          <div style="position:absolute; bottom:0;">0</div>
+        </div>
+      </div>
+    </div>
+    """, height=350)
+
     st.progress(min(int((ph / 14) * 100), 100))
+
+# --- Menu KLASIFIKASI ---
+elif menu == "Klasifikasi Asam-Basa":
+    st.header("ðŸ§¾ Klasifikasi Asam dan Basa")
+
+    data = {
+        "Nama Zat": [
+            "HCl", "Hâ‚‚SOâ‚„", "HNOâ‚ƒ", "CHâ‚ƒCOOH", "Hâ‚‚COâ‚ƒ",
+            "NaOH", "KOH", "NHâ‚„OH", "Ba(OH)â‚‚", "Mg(OH)â‚‚"
+        ],
+        "Jenis": [
+            "Asam Kuat", "Asam Kuat", "Asam Kuat", "Asam Lemah", "Asam Lemah",
+            "Basa Kuat", "Basa Kuat", "Basa Lemah", "Basa Kuat", "Basa Lemah"
+        ]
+    }
+    df = pd.DataFrame(data)
+    st.table(df)
+    st.info("ðŸ§  Catatan:\n- Asam kuat terionisasi sempurna dalam air.\n- Asam lemah hanya sebagian.\n- Begitu pula dengan basa kuat/lemah.")
+
+# --- Menu KUIS ---
+elif menu == "Kuis Asam-Basa":
+    st.header("ðŸ§  Kuis Sederhana: Asam atau Basa?")
+
+    soal = {
+        "CHâ‚ƒCOOH": "Asam Lemah",
+        "HNOâ‚ƒ": "Asam Kuat",
+        "NaOH": "Basa Kuat",
+        "NHâ‚„OH": "Basa Lemah",
+        "KOH": "Basa Kuat"
+    }
+
+    skor = 0
+    for zat, jawaban_benar in soal.items():
+        pilihan = st.radio(f"Apa jenis dari {zat}?", ["Asam Kuat", "Asam Lemah", "Basa Kuat", "Basa Lemah"], key=zat)
+        if pilihan == jawaban_benar:
+            st.success("âœ… Benar")
+            skor += 1
+        else:
+            st.error(f"âŒ Salah. Jawaban: {jawaban_benar}")
+
+    st.markdown("---")
+    st.subheader(f"ðŸŽ¯ Skor kamu: {skor} dari {len(soal)}")
