@@ -1,22 +1,3 @@
-import streamlit as st
-import streamlit.components.v1 as components  # ini penting untuk HTML custom
-
-st.set_page_config(page_title="Uji Nyala & Titrasi", layout="centered")
-st.title("🌈 Uji Nyala & ⚗️ Titrasi Asidi-Basa")
-
-# Menu Sidebar
-menu = st.sidebar.radio("Pilih Halaman:", ["Beranda", "Uji Nyala", "Titrasi Asidi-Basa"])
-
-# ------------------- BERANDA -------------------
-if menu == "Beranda":
-    st.header("👋 Selamat Datang!")
-    st.write("""
-    Website ini membantu kamu memahami konsep **uji nyala logam** dan **titrasi asam-basa** secara interaktif.
-    
-    Gunakan menu di sebelah kiri untuk mulai belajar!
-    """)
-
-# ------------------- UJI NYALA -------------------
 elif menu == "Uji Nyala":
     st.header("🔥 Uji Nyala Logam")
 
@@ -26,7 +7,7 @@ elif menu == "Uji Nyala":
         "Tembaga (Cu)", "Stronsium (Sr)"
     ])
 
-    # Warna nyala per logam (teks)
+    # Warna nyala teks
     warna_teks = {
         "Natrium (Na)": "Kuning terang",
         "Kalium (K)": "Ungu muda",
@@ -35,7 +16,7 @@ elif menu == "Uji Nyala":
         "Stronsium (Sr)": "Merah menyala"
     }
 
-    # Warna untuk animasi api
+    # Warna CSS untuk api
     warna_api = {
         "Natrium (Na)": "gold",
         "Kalium (K)": "violet",
@@ -44,49 +25,46 @@ elif menu == "Uji Nyala":
         "Stronsium (Sr)": "red"
     }
 
-    # Tampilkan warna nyala
-    st.write(f"🔍 Warna nyala: **{warna_teks[logam]}**")
+    # Penjelasan kimia singkat
+    penjelasan = {
+        "Natrium (Na)": "🔬 Elektron natrium tereksitasi dan kembali ke keadaan dasar, memancarkan cahaya kuning di sekitar 589 nm.",
+        "Kalium (K)": "🔬 Kalium memancarkan warna ungu muda karena transisi elektron pada panjang gelombang sekitar 766 nm.",
+        "Kalsium (Ca)": "🔬 Warna jingga berasal dari eksitasi elektron kalsium, memancarkan cahaya sekitar 622 nm.",
+        "Tembaga (Cu)": "🔬 Tembaga menghasilkan warna hijau kebiruan karena elektron memancarkan cahaya sekitar 510–520 nm.",
+        "Stronsium (Sr)": "🔬 Warna merah terang berasal dari transisi elektron stronsium di sekitar 606–670 nm."
+    }
 
-    # Tampilkan animasi api
-    warna_nyala = warna_api[logam]
-    components.html(f"""
-    <div style="text-align:center">
-      <h3 style="color:{warna_nyala}">Simulasi Api: {logam}</h3>
-      <div class="flame"></div>
-    </div>
+    # Tombol interaktif
+    if st.button("🔬 Mulai Uji Nyala"):
+        st.success(f"✅ Warna nyala: **{warna_teks[logam]}**")
+        st.info(penjelasan[logam])
 
-    <style>
-    .flame {{
-      margin: auto;
-      width: 80px;
-      height: 80px;
-      background: radial-gradient(circle, {warna_nyala}, black);
-      border-radius: 50%;
-      box-shadow: 0 0 60px 30px {warna_nyala};
-      animation: pulse 0.6s infinite alternate;
-    }}
+        # Tampilkan animasi api menggunakan HTML
+        import streamlit.components.v1 as components
+        warna_nyala = warna_api[logam]
 
-    @keyframes pulse {{
-      from {{ transform: scale(1); opacity: 1; }}
-      to {{ transform: scale(1.3); opacity: 0.6; }}
-    }}
-    </style>
-    """, height=300)
+        components.html(f"""
+        <div style="text-align:center">
+          <h3 style="color:{warna_nyala}">Simulasi Api: {logam}</h3>
+          <div class="flame"></div>
+        </div>
 
-# ------------------- TITRASI -------------------
-elif menu == "Titrasi Asidi-Basa":
-    st.header("⚗️ Simulasi Titrasi Asam-Basa")
+        <style>
+        .flame {{
+          margin: auto;
+          width: 80px;
+          height: 80px;
+          background: radial-gradient(circle, {warna_nyala}, black);
+          border-radius: 50%;
+          box-shadow: 0 0 60px 30px {warna_nyala};
+          animation: pulse 0.6s infinite alternate;
+        }}
 
-    volume_naoh = st.slider("Volume NaOH ditambahkan (mL)", 0, 50, 25)
-    ph = 7 + (volume_naoh - 25) * 0.3  # simulasi sederhana
-
-    st.write(f"📈 pH sekarang: **{ph:.1f}**")
-
-    if ph < 7:
-        st.warning("pH asam")
-    elif ph == 7:
-        st.info("pH netral (titik ekivalen)")
+        @keyframes pulse {{
+          from {{ transform: scale(1); opacity: 1; }}
+          to {{ transform: scale(1.3); opacity: 0.6; }}
+        }}
+        </style>
+        """, height=300)
     else:
-        st.success("pH basa")
-
-    st.progress(min(max(int((ph/14)*100), 0), 100))
+        st.warning("Klik tombol di atas untuk memulai simulasi uji nyala.")
