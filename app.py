@@ -1,14 +1,13 @@
 import streamlit as st
+import streamlit.components.v1 as components  # ini penting untuk HTML custom
 
 st.set_page_config(page_title="Uji Nyala & Titrasi", layout="centered")
-
-# Judul utama
 st.title("🌈 Uji Nyala & ⚗️ Titrasi Asidi-Basa")
 
-# Sidebar Menu
+# Menu Sidebar
 menu = st.sidebar.radio("Pilih Halaman:", ["Beranda", "Uji Nyala", "Titrasi Asidi-Basa"])
 
-# Isi Halaman
+# ------------------- BERANDA -------------------
 if menu == "Beranda":
     st.header("👋 Selamat Datang!")
     st.write("""
@@ -17,15 +16,18 @@ if menu == "Beranda":
     Gunakan menu di sebelah kiri untuk mulai belajar!
     """)
 
+# ------------------- UJI NYALA -------------------
 elif menu == "Uji Nyala":
     st.header("🔥 Uji Nyala Logam")
 
+    # Pilihan logam
     logam = st.selectbox("Pilih logam yang diuji:", [
         "Natrium (Na)", "Kalium (K)", "Kalsium (Ca)",
         "Tembaga (Cu)", "Stronsium (Sr)"
     ])
 
-    warna = {
+    # Warna nyala per logam (teks)
+    warna_teks = {
         "Natrium (Na)": "Kuning terang",
         "Kalium (K)": "Ungu muda",
         "Kalsium (Ca)": "Jingga",
@@ -33,21 +35,45 @@ elif menu == "Uji Nyala":
         "Stronsium (Sr)": "Merah menyala"
     }
 
-    st.write(f"🔍 Warna nyala: **{warna[logam]}**")
-
-    video_url = "https://www.youtube.com/watch?v=NDgu4MrqAAA"
-    st.video(video_url)
-
-    gambar = {
-        "Natrium (Na)": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Sodium_flame_test.jpg",
-        "Kalium (K)": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Potassium_flame_test.jpg",
-        "Kalsium (Ca)": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Calcium_flame_test.jpg",
-        "Tembaga (Cu)": "https://upload.wikimedia.org/wikipedia/commons/b/b0/Copper_flame_test.jpg",
-        "Stronsium (Sr)": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Strontium_flame_test.jpg"
+    # Warna untuk animasi api
+    warna_api = {
+        "Natrium (Na)": "gold",
+        "Kalium (K)": "violet",
+        "Kalsium (Ca)": "orange",
+        "Tembaga (Cu)": "turquoise",
+        "Stronsium (Sr)": "red"
     }
 
-    st.write(f"🔍 Warna nyala: **{warna[logam]}**")
-    st.image(gambar[logam], caption=f"Warna nyala {logam}", use_column_width=True)
+    # Tampilkan warna nyala
+    st.write(f"🔍 Warna nyala: **{warna_teks[logam]}**")
+
+    # Tampilkan animasi api
+    warna_nyala = warna_api[logam]
+    components.html(f"""
+    <div style="text-align:center">
+      <h3 style="color:{warna_nyala}">Simulasi Api: {logam}</h3>
+      <div class="flame"></div>
+    </div>
+
+    <style>
+    .flame {{
+      margin: auto;
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle, {warna_nyala}, black);
+      border-radius: 50%;
+      box-shadow: 0 0 60px 30px {warna_nyala};
+      animation: pulse 0.6s infinite alternate;
+    }}
+
+    @keyframes pulse {{
+      from {{ transform: scale(1); opacity: 1; }}
+      to {{ transform: scale(1.3); opacity: 0.6; }}
+    }}
+    </style>
+    """, height=300)
+
+# ------------------- TITRASI -------------------
 elif menu == "Titrasi Asidi-Basa":
     st.header("⚗️ Simulasi Titrasi Asam-Basa")
 
