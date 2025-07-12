@@ -211,7 +211,8 @@ elif menu == "Klasifikasi Asam-Basa":
 
 # --- Menu KUIS ---
 elif menu == "Kuis Asam-Basa":
-    st.header("🧠 Kuis Sederhana: Asam atau Basa?")
+    st.header("🧠 Kuis: Asam atau Basa?")
+    st.write("Pilih jenis senyawa berikut, lalu klik 'Periksa Jawaban' untuk mengetahui hasilnya.")
 
     soal = {
         "CH₃COOH": "Asam Lemah",
@@ -221,12 +222,26 @@ elif menu == "Kuis Asam-Basa":
         "KOH": "Basa Kuat"
     }
 
+    jawaban_user = {}
     skor = 0
-    for zat, jawaban_benar in soal.items():
-        pilihan = st.radio(f"Apa jenis dari {zat}?", ["Asam Kuat", "Asam Lemah", "Basa Kuat", "Basa Lemah"], key=zat)
-        if pilihan == jawaban_benar:
-            st.success("✅ Benar")
-            skor += 1
+
+    with st.form("kuis_form"):
+        for zat in soal:
+            pilihan = st.radio(f"Apa jenis dari {zat}?", ["Asam Kuat", "Asam Lemah", "Basa Kuat", "Basa Lemah"], key=zat)
+            jawaban_user[zat] = pilihan
+
+        submitted = st.form_submit_button("Periksa Jawaban")
+
+    if submitted:
+        for zat in soal:
+            if jawaban_user[zat] == soal[zat]:
+                st.success(f"✅ {zat} → Benar!")
+                skor += 1
+            else:
+                st.error(f"❌ {zat} → Salah. Jawaban benar: {soal[zat]}")
+        
+        st.markdown("---")
+        st.subheader(f"🎯 Skor akhir kamu: {skor} dari {len(soal)}")
         else:
             st.error(f"❌ Salah. Jawaban: {jawaban_benar}")
 
