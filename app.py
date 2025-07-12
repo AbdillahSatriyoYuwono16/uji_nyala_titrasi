@@ -83,7 +83,19 @@ elif menu == "Uji Nyala":
 # --- Menu TITRASI ASAM BASA ---
 elif menu == "Titrasi Asam Basa":
     st.header("⚗️ Simulasi Titrasi Asam-Basa")
+# Visualisasi buret
+    tinggi_buret = 200  # tinggi maksimal buret (px)
+    tinggi_larutan = int(tinggi_buret * (1 - min(volume_basa, 50) / 50))  # semakin banyak ditambahkan, makin turun
 
+    components.html(f"""
+    <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="width:40px; height:{tinggi_buret}px; border:2px solid #555; position:relative; background:#f0f0f0;">
+            <div style="position:absolute; bottom:0; width:100%; height:{tinggi_buret - tinggi_larutan}px; background:linear-gradient(to top, lightblue, {warna}); transition:height 0.3s;"></div>
+        </div>
+        <div style="margin-top:8px; font-weight:bold;">Volume: {volume_basa} mL</div>
+    </div>
+    """, height=tinggi_buret + 80)
+    
     st.markdown("""
 Titrasi asam-basa adalah metode untuk menentukan konsentrasi suatu larutan asam atau basa dengan menambahkan larutan penitrasi (basa atau asam yang telah diketahui konsentrasinya) hingga tercapai titik ekivalen.
 
