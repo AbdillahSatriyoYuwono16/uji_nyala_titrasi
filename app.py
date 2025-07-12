@@ -1,19 +1,25 @@
 import streamlit as st
 import streamlit.components.v1 as components
+import numpy as np
+import matplotlib.pyplot as plt
 
-# Sidebar Menu
+# Menu sidebar
 menu = st.sidebar.selectbox(
-    "Pilih menu",
+    "📚 Pilih menu",
     ["Beranda", "Uji Nyala", "Titrasi Asam Basa"]
 )
 
-# --- Menu BERANDA ---
+# ============================
+# 🔹 BERANDA
+# ============================
 if menu == "Beranda":
-    st.title("🔬 Selamat Datang di Aplikasi Kimia Interaktif")
-    st.write("Silakan pilih menu di sebelah kiri untuk memulai.")
+    st.title("🔬 Aplikasi Kimia Interaktif")
+    st.write("Selamat datang! Gunakan menu di samping untuk mulai belajar.")
     st.image("https://cdn.pixabay.com/photo/2020/03/17/03/32/laboratory-4936936_960_720.png", width=400)
 
-# --- Menu UJI NYALA ---
+# ============================
+# 🔥 UJI NYALA LOGAM
+# ============================
 elif menu == "Uji Nyala":
     st.header("🔥 Uji Nyala Logam")
 
@@ -75,42 +81,94 @@ elif menu == "Uji Nyala":
         }}
         </style>
         """, height=300)
+
     else:
         st.warning("Klik tombol di atas untuk memulai simulasi uji nyala.")
 
-# --- Menu TITRASI ASAM BASA ---
+# ============================
+# ⚗️ TITRASI ASAM BASA
+# ============================
 elif menu == "Titrasi Asam Basa":
-    st.header("⚗️ Titrasi Asam-Basa")
+    st.header("⚗️ Titrasi Asam Basa")
 
     st.markdown("""
-Titrasi asam-basa adalah teknik untuk menentukan konsentrasi suatu larutan asam atau basa  
-dengan menambahkan larutan penitrasi (basa/asam yang sudah diketahui konsentrasinya) secara bertahap.
+Titrasi asam-basa adalah metode untuk menentukan konsentrasi asam atau basa  
+dengan meneteskan larutan lawannya hingga titik ekivalen tercapai.
 
-Rumus dasar:
-> **Ma × Va = Mb × Vb**
+**Rumus utama:**
+> Ma × Va = Mb × Vb
 """)
 
-    # Pilih asam dan basa
     asam = st.selectbox("Pilih jenis asam:", ["HCl", "CH₃COOH"])
     basa = st.selectbox("Pilih jenis basa:", ["NaOH", "KOH"])
-
-    # Input nilai-nilai
     Ma = st.number_input("Konsentrasi Asam (Ma) mol/L", min_value=0.0, step=0.1)
     Va = st.number_input("Volume Asam (Va) mL", min_value=0.0, step=1.0)
     Mb = st.number_input("Konsentrasi Basa (Mb) mol/L", min_value=0.0, step=0.1)
 
     if Ma > 0 and Va > 0 and Mb > 0:
-        # Hitung volume basa
         Vb = (Ma * Va) / Mb
         st.success(f"🎯 Volume basa yang dibutuhkan: **{Vb:.2f} mL**")
     else:
         st.info("Masukkan semua nilai untuk menghitung volume basa.")
 
-    st.image("https://upload.wikimedia.org/wikipedia/commons/3/3e/Acid-base_titration_curve.png", caption="Kurva Titrasi Asam-Basa", use_column_width=True)
+    # ============================
+    # 📈 SIMULASI KURVA TITRASI
+    # ============================
+    st.subheader("📈 Simulasi Kurva Titrasi")
 
+    tipe_titrasi = st.selectbox("Pilih jenis titrasi:", [
+        "Asam kuat + Basa kuat",
+        "Asam lemah + Basa kuat"
+    ])
 
-# Menu Titrasi (opsional kamu isi nanti)
-elif menu == "Titrasi Asam Basa":
-    st.header("⚗️ Titrasi Asam Basa")
-    st.write("Penjelasan tentang titrasi akan ditambahkan di sini.")
+    Ma_sim = st.number_input("Konsentrasi Asam (mol/L)", 0.1, 2.0, 0.1, key="Ma_sim")
+    Va_sim = st.number_input("Volume Asam (mL)", 10.0, 100.0, 25.0, key="Va_sim")
+    Mb_sim = st.number_input("Konsentrasi Basa (mol/L)", 0.1, 2.0, 0.1, key="Mb_sim")
+
+    if st.button("🔬 Tampilkan Simulasi"):
+        Vb_vals = np.linspace(0.1, Va_sim * 2, 200)
+        pH_vals = []
+        Ka = 1.8e-5  # untuk CH3COOH (asam lemah)
+
+        for Vb in Vb_vals:
+            n_asam = Ma_sim * Va_sim / 1000
+            n_basa = Mb_sim * Vb / 1000
+
+            if tipe_titrasi == "Asam kuat + Basa kuat":
+                if n_basa < n_asam:
+                    H = (n_asam - n_basa) / (Va_sim + Vb) * 1000
+                    pH = -np.log10(H)
+                elif n_basa == n_asam:
+                    pH = 7
+                else:
+                    OH = (n_basa - n_asam) / (Va_sim + Vb) * 1000
+                    pOH = -np.log10(OH)
+                    pH = 14 - pOH
+
+            elif tipe_titrasi == "Asam lemah + Basa kuat":
+                if n_basa < n_asam:
+                    HA = n_asam - n_basa
+                    A_ = n_basa
+                    H = Ka * (HA / A_)
+                    pH = -np.log10(H)
+                elif n_basa == n_asam:
+                    A_ = n_asam
+                    OH = np.sqrt(1e-14 / A_)
+                    pOH = -np.log10(OH)
+                    pH = 14 - pOH
+                else:
+                    OH = (n_basa - n_asam) / (Va_sim + Vb) * 1000
+                    pOH = -np.log10(OH)
+                    pH = 14 - pOH
+
+            pH_vals.append(pH)
+
+        fig, ax = plt.subplots()
+        ax.plot(Vb_vals, pH_vals, color='green')
+        ax.set_title(f"Kurva Titrasi: {tipe_titrasi}")
+        ax.set_xlabel("Volume Basa (mL)")
+        ax.set_ylabel("pH")
+        ax.grid(True)
+        st.pyplot(fig)
+
 
