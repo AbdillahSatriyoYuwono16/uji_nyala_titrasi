@@ -12,7 +12,7 @@ menu = st.sidebar.selectbox(
 
 # --- Menu BERANDA ---
 if menu == "Beranda":
-    st.title("🔬 Selamat Datang di ChemSpark | Virtual Lab: Flame Test & Titration 🫧")
+    st.title("🔬 Selamat Datang di ChemSpark | Virtual mini Lab: Flame Test & Titration ")
     st.subheader("🧪 1A Kelompok 2")
     st.write("Selamat datang di aplikasi pembelajaran kimia interaktif berbasis web. Di sini, kamu bisa memahami konsep **Uji Nyala Logam** dan **Titrasi Asam-Basa** melalui simulasi dan visualisasi yang menyenangkan!")
 
