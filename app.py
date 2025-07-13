@@ -12,11 +12,30 @@ menu = st.sidebar.selectbox(
 
 # --- Menu BERANDA ---
 if menu == "Beranda":
-    st.title("🔬 Selamat Datang di Aplikasi Kimia Interaktif")
-    st.write("Kelompok 2 - Kelas 1A")
-    st.write("Silakan pilih menu di sebelah kiri untuk memulai.")
-    st.image("https://cdn.pixabay.com/photo/2020/03/17/03/32/laboratory-4936936_960_720.png", width=400)
+    st.title("🔬 Selamat Datang di ChemSpark | Virtual Lab: Flame Test & Titration 🫧")
+    st.subheader("🧪 1A Kelompok 2")
+    st.write("Selamat datang di aplikasi pembelajaran kimia interaktif berbasis web. Di sini, kamu bisa memahami konsep **Uji Nyala Logam** dan **Titrasi Asam-Basa** melalui simulasi dan visualisasi yang menyenangkan!")
 
+    st.markdown("---")
+
+    # Penjelasan Uji Nyala
+    st.subheader("🔥 Apa itu Uji Nyala?")
+    st.write("""
+    Uji nyala adalah metode identifikasi unsur logam berdasarkan **warna api** yang dihasilkan ketika senyawa logam dibakar.
+    Warna yang muncul berasal dari elektron yang tereksitasi dan kembali ke keadaan dasar, memancarkan cahaya dengan panjang gelombang tertentu.
+    """)
+
+    st.markdown("---")
+
+    # Penjelasan Titrasi
+    st.subheader("⚗️ Apa itu Titrasi Asam-Basa?")
+    st.write("""
+    Titrasi adalah proses menambahkan larutan penitrasi (basa atau asam) secara bertahap untuk menentukan konsentrasi larutan lain berdasarkan titik **netralisasi** (pH = 7).
+    Pada titik ini terjadi reaksi setara antara asam dan basa, ditandai oleh **indikator warna** atau perubahan pH.
+    """)
+
+    st.markdown("---")
+    st.info("Gunakan menu di sebelah kiri untuk mulai simulasi interaktif.")
 # --- Menu UJI NYALA ---
 elif menu == "Uji Nyala":
     st.header("🔥 Uji Nyala Logam")
