@@ -100,12 +100,27 @@ elif menu == "Uji Nyala":
         }}
         @keyframes pulse {{
           from {{ transform: scale(1); opacity: 1; }}
-          to {{ transform: scale(1.3); opacity: 0.6; }}
+          to {{ transform: scale(1.3); opacity: 0.6); }}
         }}
         </style>
         """, height=300)
     else:
         st.warning("Klik tombol di atas untuk memulai simulasi uji nyala.")
+
+# --- Menu TITRASI ---
+elif menu == "Titrasi Asam Basa":
+    st.header("⚗️ Simulasi Titrasi Asam-Basa")
+
+    volume_asam = st.number_input("Volume Asam (mL)", min_value=0.0, value=25.0)
+    konsentrasi_asam = st.number_input("Konsentrasi Asam (mol/L)", min_value=0.0, value=0.1)
+    konsentrasi_basa = st.number_input("Konsentrasi Basa (mol/L)", min_value=0.0, value=0.1)
+
+    if st.button("Hitung Volume Basa yang Diperlukan"):
+        try:
+            volume_basa = (volume_asam * konsentrasi_asam) / konsentrasi_basa
+            st.success(f"Volume basa yang diperlukan untuk titrasi: {volume_basa:.2f} mL")
+        except ZeroDivisionError:
+            st.error("Konsentrasi basa tidak boleh nol.")
 
 # --- Menu KLASIFIKASI ---
 elif menu == "Klasifikasi Asam-Basa":
